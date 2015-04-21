@@ -35,4 +35,21 @@
         </menus>
       </MenuBar>
    </top>
+   <center>
+      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="213.0" text="Priority" />
+          <TableColumn prefWidth="585.0" text="Received" />
+            <TableColumn prefWidth="75.0" text="Read" />
+            <TableColumn prefWidth="75.0" text="Sender" />
+            <TableColumn prefWidth="75.0" text="Subject" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
+   <left>
+      <TreeView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
 </BorderPane>
