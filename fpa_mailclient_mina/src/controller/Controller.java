@@ -23,7 +23,6 @@ public class Controller implements Initializable{
     private MenuItem helpAbout;
 
     @Override
-
     public void initialize(URL location, ResourceBundle resources) {
         fileExit.setOnAction((e) -> handleFileExit()) ;
 

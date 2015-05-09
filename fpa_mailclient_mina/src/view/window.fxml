@@ -46,18 +46,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fixedCellSize="0.0" prefHeight="283.0" prefWidth="798.0" AnchorPane.rightAnchor="0.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="Priority" />
-                      <TableColumn prefWidth="75.0" text="Received" />
-                        <TableColumn prefWidth="75.0" text="Read" />
-                        <TableColumn prefWidth="75.0" text="Sender" />
-                        <TableColumn prefWidth="356.0" text="Subject" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
+
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="798.0">
@@ -72,10 +61,16 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Reply" />
+                              <Button mnemonicParsing="false" text="Reply All" />
+                              <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="20.0" prefWidth="71.0" text="Forward" />
+                           </children>
+                        </HBox>
+                     </children>
                   </GridPane>
-                  <Button layoutX="25.0" layoutY="20.0" mnemonicParsing="false" text="Reply" />
-                  <Button layoutX="93.0" layoutY="20.0" mnemonicParsing="false" text="Reply All" />
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="20.0" prefWidth="71.0" text="Forward" />
                </children>
             </AnchorPane>
         </items>
