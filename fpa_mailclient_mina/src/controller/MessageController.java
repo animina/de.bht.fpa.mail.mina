@@ -84,6 +84,15 @@ public class MessageController implements Initializable {
         messageContent.add(test1);
         messageContent.add(test1);
         messageContent.add(test1);
+        Message test2 = new Message();
+        test2.setId("a13");
+        test2.setSender(new MessageStakeholder("Muddi", "muddi@home.de"));
+        test2.setSubject("Erinnerung2");
+        test2.setImportanceOfMessage(MessageImportance.HIGH);
+        test2.setReceivedAt(LocalDateTime.now());
+        test2.setReadStatus(true);
+        loadMessageIcons();
+        messageContent.add(test2);
 
 
     }
