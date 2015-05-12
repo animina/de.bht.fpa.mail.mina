@@ -1,6 +1,6 @@
 package controller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -23,7 +23,7 @@ public class DateUtil {
      * @param date the date to be returned as a string
      * @return formatted string
      */
-    public static String format(LocalDate date) {
+    public static String format(LocalDateTime date) {
         if (date == null) {
             return null;
         }
@@ -32,16 +32,16 @@ public class DateUtil {
 
     /**
      * Converts a String in the format of the defined {@link DateUtil#DATE_PATTERN}
-     * to a {@link LocalDate} object.
+     * to a {@link LocalDateTime} object.
      *
      * Returns null if the String could not be converted.
      *
      * @param dateString the date as String
      * @return the date object or null if it could not be converted
      */
-    public static LocalDate parse(String dateString) {
+    public static LocalDateTime parse(String dateString) {
         try {
-            return DATE_FORMATTER.parse(dateString, LocalDate::from);
+            return DATE_FORMATTER.parse(dateString, LocalDateTime::from);
         } catch (DateTimeParseException e) {
             return null;
         }

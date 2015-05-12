@@ -18,6 +18,13 @@ import model.MessageImportance;
 import model.MessageStakeholder;
 
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextArea;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.awt.*;
+import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -65,6 +72,11 @@ public class MessageController implements Initializable {
     @FXML
     private Label betreffLabel;
 
+    @FXML
+    private Label dateLabel;
+
+    @FXML
+    private TextArea contentTextArea;
 
 
     @Override
@@ -77,6 +89,13 @@ public class MessageController implements Initializable {
         System.out.println("Test");
         messageTable.setItems(messageContent);
 
+        showMessageDetails(null);
+
+        // Listen for selection changes and show the person details when changed.
+        messageTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showMessageDetails(newValue));
+
+     //   createExampleMessages();
 
     }
 
@@ -88,6 +107,7 @@ public class MessageController implements Initializable {
         test1.setImportanceOfMessage(MessageImportance.NORMAL);
         test1.setReceivedAt(LocalDateTime.now());
         test1.setReadStatus(true);
+        test1.setText("Hallo!!");
         loadMessageIcons();
         messageContent.add(test1);
         messageContent.add(test1);
@@ -100,11 +120,16 @@ public class MessageController implements Initializable {
         test2.setImportanceOfMessage(MessageImportance.HIGH);
         test2.setReceivedAt(LocalDateTime.now());
         test2.setReadStatus(true);
+        test2.setText("Wie geht es dir?");
         loadMessageIcons();
         messageContent.add(test2);
 
 
+
     }
+
+
+
 
     public void loadMessageIcons() {
         importanceOfMessage.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
@@ -118,11 +143,11 @@ public class MessageController implements Initializable {
                 } else {
                     ImageView priorityIconView = null;
                     if (item == MessageImportance.HIGH) {
-                        priorityIconView = new ImageView(new Image("high-priority-icon.png"));
+                        priorityIconView = new ImageView(new Image("highprio-icon.png"));
                     } else if (item == MessageImportance.NORMAL) {
-                        priorityIconView = new ImageView(new Image("medium-priority-icon.png"));
+                        priorityIconView = new ImageView(new Image("normalprio-icon.png"));
                     } else if (item == MessageImportance.LOW) {
-                        priorityIconView = new ImageView(new Image("low-priority-icon.png"));
+                        priorityIconView = new ImageView(new Image("lowprio-icon.png"));
                     }
                     setGraphic(priorityIconView);
                 }
@@ -131,20 +156,40 @@ public class MessageController implements Initializable {
 
         readStatus.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         readStatus.setCellFactory(cellData -> new TableCell<Message, Boolean>() {
-//            @Override
-//            protected void updateItem(Boolean item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (item == null || empty) {
-//                    setText(null);
-//                    setStyle("");
-//                } else {
-//                    ImageView messageReadImageView;
-//                    if (item) messageReadImageView = new ImageView(new Image("read-me-icon.png"));
-//                    else messageReadImageView = new ImageView((new Image("read-icon.png")));
-//                    setGraphic(messageReadImageView);
-//                }
-//            }
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    ImageView messageReadImageView;
+                    if (item) messageReadImageView = new ImageView(new Image("not-read-icon.png"));
+                    else messageReadImageView = new ImageView((new Image("read-icon.png")));
+                    setGraphic(messageReadImageView);
+                }
+            }
         });
+    }
+
+    private void showMessageDetails(Message message) {
+        if (message != null) {
+            // Fill the labels with info from the person object.
+            fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
+            toLabel.setText(String.valueOf(message.getRecipients()));
+            dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
+            betreffLabel.setText(message.getSubject());
+            contentTextArea.setText(message.getText());
+
+            // birthdayLabel.setText(...);
+        } else {
+            // Person is null, remove all the text.
+            fromLabel.setText("");
+            toLabel.setText("");
+            dateLabel.setText("");
+            betreffLabel.setText("");
+            contentTextArea.setText("");
+        }
     }
 
 }
