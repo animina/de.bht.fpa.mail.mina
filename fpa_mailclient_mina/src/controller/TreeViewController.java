@@ -19,7 +19,7 @@ public class TreeViewController implements Initializable {
     @FXML
     private TreeView<String> fileTree;
 
-    private final Node folderIcon = new ImageView (new Image (getClass().getResourceAsStream("../Mail-icon.jpg")));
+    private final Node folderIcon = new ImageView (new Image (getClass().getResourceAsStream("../Mail-icon.png")));
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -28,7 +28,7 @@ public class TreeViewController implements Initializable {
             for(int i = 1; i < 6; ++i) {
                 TreeItem<String> subFolder = new TreeItem<>("Subfolder " + i);
                 root.getChildren().add(subFolder);
-                subFolder.setGraphic(new ImageView (new Image (getClass().getResourceAsStream("../Mail-icon.jpg"))));
+                subFolder.setGraphic(new ImageView (new Image (getClass().getResourceAsStream("../Mail-icon.png"))));
             }
             root.setExpanded(true);
             fileTree.setRoot(root);

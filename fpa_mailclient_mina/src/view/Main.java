@@ -16,9 +16,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         BorderPane root = FXMLLoader.load(getClass().getResource("window.fxml"));
-        primaryStage.getIcons().add(new Image("Mail-icon.jpg"));
+        primaryStage.getIcons().add(new Image("Mail-icon.png"));
         primaryStage.setTitle("Endlich Mails");
-        TreeView treeViewWindow = FXMLLoader.load(getClass().getResource("../view/treeView.fxml"));
+        FXMLLoader test = new FXMLLoader();
+        test.setLocation(getClass().getResource("treeView.fxml"));
+        TreeView treeViewWindow = test.load();
         root.setLeft(treeViewWindow);
      //   SplitPane contentWindow = FXMLLoader.load(getClass().getResource("../view/messageView.fxml"));
      //   root.setCenter(contentWindow);

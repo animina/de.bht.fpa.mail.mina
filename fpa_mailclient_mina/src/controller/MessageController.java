@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -30,9 +31,9 @@ public class MessageController implements Initializable {
 
     private ObservableList<Message> messageContent = FXCollections.observableArrayList();
 
-    private final Node highPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../high-priority-icon.png")));
-    private final Node mediumPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../medium-priority-icon.png")));
-    private final Node lowPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../low-priority-icon.png")));
+    private final Node highPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../highprio-icon.png")));
+    private final Node mediumPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../normalprio-icon.png")));
+    private final Node lowPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../lowprio-icon.png")));
 
 
 
@@ -54,7 +55,16 @@ public class MessageController implements Initializable {
     @FXML
     private TableColumn<Message, String> subject;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+    @FXML
+    private Label toLabel;
+
+    @FXML
+    private Label fromLabel;
+
+    @FXML
+    private Label betreffLabel;
+
 
 
     @Override
@@ -66,7 +76,6 @@ public class MessageController implements Initializable {
         System.out.println(messageContent.toString());
         System.out.println("Test");
         messageTable.setItems(messageContent);
-
 
 
     }
@@ -122,19 +131,19 @@ public class MessageController implements Initializable {
 
         readStatus.setCellValueFactory(cellData -> cellData.getValue().readStatusProperty().asObject());
         readStatus.setCellFactory(cellData -> new TableCell<Message, Boolean>() {
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    ImageView messageReadImageView;
-                    if (item) messageReadImageView = new ImageView(new Image("read-me-icon.png"));
-                    else messageReadImageView = new ImageView((new Image("read-icon.png")));
-                    setGraphic(messageReadImageView);
-                }
-            }
+//            @Override
+//            protected void updateItem(Boolean item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (item == null || empty) {
+//                    setText(null);
+//                    setStyle("");
+//                } else {
+//                    ImageView messageReadImageView;
+//                    if (item) messageReadImageView = new ImageView(new Image("read-me-icon.png"));
+//                    else messageReadImageView = new ImageView((new Image("read-icon.png")));
+//                    setGraphic(messageReadImageView);
+//                }
+//            }
         });
     }
 
