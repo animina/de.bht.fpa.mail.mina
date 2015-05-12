@@ -7,16 +7,5 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MessageController">
-    <children>
-<TableView fx:id="messageTable" fixedCellSize="0.0" prefHeight="283.0" prefWidth="798.0" AnchorPane.rightAnchor="0.0">
-<columns>
-    <TableColumn fx:id="importanceOfMessage" prefWidth="75.0" text="Priority" />
-    <TableColumn fx:id="receivedAt" prefWidth="75.0" text="Received" />
-    <TableColumn fx:id="readStatus" prefWidth="75.0" text="Read" />
-    <TableColumn fx:id="sender" prefWidth="75.0" text="Sender" />
-    <TableColumn fx:id="subject" prefWidth="356.0" text="Subject" />
-</columns>
-</TableView>
-    </children>
-</AnchorPane>
+
+<SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MessageController" />

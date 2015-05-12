@@ -110,7 +110,7 @@ public class Message {
         return this.text.get();
     }
 
-    public List<MessageStakeholder> getRecipients() {
+       public List<MessageStakeholder> getRecipients() {
         return recipients;
     }
 

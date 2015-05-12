@@ -1,0 +1,7 @@
+<application>
+  <component name="FindRecents">
+    <findStrings>
+      <find>getRecip</find>
+    </findStrings>
+  </component>
+</application>
