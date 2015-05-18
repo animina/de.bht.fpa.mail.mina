@@ -81,8 +81,10 @@ public class MessageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         receivedAt.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
         sender.setCellValueFactory(cellData -> cellData.getValue().senderProperty().get().nameProperty());
+
         subject.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         createMessage();
         System.out.println(messageContent.toString());
@@ -107,6 +109,7 @@ public class MessageController implements Initializable {
         test1.setImportanceOfMessage(MessageImportance.NORMAL);
         test1.setReceivedAt(LocalDateTime.now());
         test1.setReadStatus(true);
+        test1.setRecipients(new MessageStakeholder("Icke", "Icke@Berlin.de"));
         test1.setText("Hallo!!");
         loadMessageIcons();
         messageContent.add(test1);
@@ -119,6 +122,7 @@ public class MessageController implements Initializable {
         test2.setSubject("Erinnerung2");
         test2.setImportanceOfMessage(MessageImportance.HIGH);
         test2.setReceivedAt(LocalDateTime.now());
+        test1.setRecipients(new MessageStakeholder("Jemand", "Jemand@Berlin.de"));
         test2.setReadStatus(true);
         test2.setText("Wie geht es dir?");
         loadMessageIcons();
@@ -176,7 +180,9 @@ public class MessageController implements Initializable {
         if (message != null) {
             // Fill the labels with info from the person object.
             fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
-            toLabel.setText(String.valueOf(message.getRecipients()));
+            System.out.println("FromLabel: " + fromLabel);
+            toLabel.setText(String.valueOf(message.getRecipients().getMailAddress()));
+            System.out.println("ToLabel: " + toLabel);
             dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
             betreffLabel.setText(message.getSubject());
             contentTextArea.setText(message.getText());

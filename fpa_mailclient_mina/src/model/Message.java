@@ -2,6 +2,8 @@ package model;
 
 import javafx.beans.property.*;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,13 @@ public class Message {
     private ObjectProperty<MessageStakeholder> sender;
     private StringProperty subject;
     private StringProperty text;
-    private List<MessageStakeholder> recipients;
+
+    //alte Version mit Liste
+  //  private List<MessageStakeholder> recipients;
+
+    //neue bzw ziwschenversion mit ObjectProperty
+
+    private ObjectProperty <MessageStakeholder> recipients;
 
     public Message() {
         this.importanceOfMessage = new SimpleObjectProperty<>();
@@ -27,7 +35,36 @@ public class Message {
         this.receivedAt = new SimpleObjectProperty<>();
         this.sender = new SimpleObjectProperty<>();
         this.text = new SimpleStringProperty();
-        this.recipients = new ArrayList<>();
+
+      //alte Version mit Liste
+      //  this.recipients = new ArrayList<>();
+
+        //neue Version oder Zwischenversion mit ObjectProperty
+        this.recipients = new SimpleObjectProperty<>();
+    }
+/*
+    @XmlElementWrapper
+    @XmlElement(name = "recipient")
+    public List<MessageStakeholder> getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(List<MessageStakeholder> recipients) {
+        this.recipients = recipients;
+    }
+*/
+
+    //alte Version von set ung getRecipients()
+    public void setRecipients(MessageStakeholder messageStakeholder) {
+        recipients.set(messageStakeholder);
+    }
+
+
+
+
+
+    public MessageStakeholder getRecipients() {
+        return recipients.get();
     }
 
     public void setId(String id) {
@@ -108,13 +145,5 @@ public class Message {
 
     public String getText() {
         return this.text.get();
-    }
-
-       public List<MessageStakeholder> getRecipients() {
-        return recipients;
-    }
-
-    public void setRecipients(List<MessageStakeholder> recipients) {
-        this.recipients = recipients;
     }
 }
