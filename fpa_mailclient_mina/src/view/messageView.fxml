@@ -48,7 +48,7 @@
                         <children>
                             <Label text="To:" />
                             <Label text="From" />
-                            <Label text="Eine Testnachricht von" />
+                            <Label fx:id="TestnachrichtLabel" />
                         </children>
                     </VBox>
                     <TextArea fx:id="contentTextArea" editable="false" prefHeight="42.0" prefWidth="50.0" GridPane.rowIndex="2" />

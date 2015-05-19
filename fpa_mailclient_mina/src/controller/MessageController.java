@@ -78,6 +78,9 @@ public class MessageController implements Initializable {
     @FXML
     private TextArea contentTextArea;
 
+    @FXML
+    private Label TestnachrichtLabel;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -107,7 +110,7 @@ public class MessageController implements Initializable {
         test1.setSender(new MessageStakeholder("Muddi", "muddi@home.de"));
         test1.setSubject("Erinnerung");
         test1.setImportanceOfMessage(MessageImportance.NORMAL);
-        test1.setReceivedAt(LocalDateTime.now());
+        test1.setReceivedAt(DateUtil.format(LocalDateTime.now()));
         test1.setReadStatus(true);
         test1.setRecipients(new MessageStakeholder("Icke", "Icke@Berlin.de"));
         test1.setText("Hallo!!");
@@ -122,7 +125,7 @@ public class MessageController implements Initializable {
         test2.setSubject("Erinnerung2");
         test2.setImportanceOfMessage(MessageImportance.HIGH);
         test2.setReceivedAt(LocalDateTime.now());
-        test1.setRecipients(new MessageStakeholder("Jemand", "Jemand@Berlin.de"));
+        test2.setRecipients(new MessageStakeholder("Jemand", "Jemand@Berlin.de"));
         test2.setReadStatus(true);
         test2.setText("Wie geht es dir?");
         loadMessageIcons();
@@ -186,6 +189,7 @@ public class MessageController implements Initializable {
             dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
             betreffLabel.setText(message.getSubject());
             contentTextArea.setText(message.getText());
+            TestnachrichtLabel.setText("Eine Testnachricht von " + message.getSender().getMailAddress());
 
             // birthdayLabel.setText(...);
         } else {
