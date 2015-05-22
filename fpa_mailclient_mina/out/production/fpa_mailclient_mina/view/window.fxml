@@ -9,30 +9,30 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuBarController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
 
-            <Menu fx:id="file" mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" onAction="#clickedFile" text="File">
                 <items>
                     <MenuItem fx:id="fileExit" mnemonicParsing="false" text="Exit" />
                 </items>
             </Menu>
 
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" onAction="#clickedEdit" text="Edit">
             <items>
               <MenuItem fx:id="editSetBasePath" mnemonicParsing="false" text="Set Base Path" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Filter">
+          <Menu mnemonicParsing="false" onAction="#clickedFilter" text="Filter">
             <items>
               <MenuItem fx:id="filterSetFilter" mnemonicParsing="false" text="Set Filter" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" onAction="#clickedHelp" text="Help">
               <items>
-                  <MenuItem fx:id="helpAbout" mnemonicParsing="false" text="About" />
+                  <MenuItem fx:id="helpAbout" mnemonicParsing="false" onAction="#clickedHelp" text="About" />
               </items>
           </Menu>
         </menus>
