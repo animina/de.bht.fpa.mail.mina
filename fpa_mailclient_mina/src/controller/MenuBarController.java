@@ -93,9 +93,11 @@ public class MenuBarController  {
             root = FXMLLoader.load(getClass().getResource("../view/aboutView.fxml"));
             Stage aboutWindow = new Stage();
             setDialogStage(aboutWindow);
-            aboutWindow.setTitle("AAAAAbout Endlich Mails");
+            aboutWindow.setTitle("About Endlich Mails");
             aboutWindow.setScene(new Scene(root, 300, 250));
             aboutWindow.showAndWait();
+
+            if (okClicked) aboutWindow.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,7 +113,7 @@ public class MenuBarController  {
 
     @FXML
     private void handleOk() {
-        dialogStage.close();
+        okClicked = true;
     }
 
 

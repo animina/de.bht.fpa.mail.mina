@@ -55,7 +55,7 @@
                     <Label fx:id="dateLabel" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <children>
-                            <Label fx:id="toLabel" layoutX="71.0" layoutY="8.0" />
+                            <Label fx:id="recipientsLabel" layoutX="71.0" layoutY="8.0" />
                             <Label fx:id="fromLabel" />
                             <Label fx:id="betreffLabel" text="betreffLabel" />
                         </children>

@@ -13,15 +13,24 @@ import javafx.scene.image.ImageView;
 import model.Message;
 import model.MessageImportance;
 import model.MessageStakeholder;
+import model.MessageListWrapper;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import util.DateUtil;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 
 /**
  * Created by mina on 05.05.15.
@@ -56,7 +65,7 @@ public class MessageController implements Initializable {
 
 
     @FXML
-    private Label toLabel;
+    private Label recipientsLabel;
 
     @FXML
     private Label fromLabel;
@@ -78,77 +87,6 @@ public class MessageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        receivedAt.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
-        receivedAt.setCellFactory(cellData -> new TableCell<Message, LocalDateTime>()
-        {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                    setStyle("");
-                } else setText(formatter.format(item));
-            }
-        });
-        /*
-        dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
-
-        importanceOfMessage.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
-        importanceOfMessage.setCellFactory(cellData -> new TableCell<Message, MessageImportance>() {
-    */
-            sender.setCellValueFactory(cellData->cellData.getValue().senderProperty().get().nameProperty());
-            subject.setCellValueFactory(cellData->cellData.getValue().subjectProperty());
-
-            createMessage();
-
-            System.out.println(messageContent.toString());
-            System.out.println("Test");
-            messageTable.setItems(messageContent);
-            showMessageDetails(null);
-
-            // Listen for selection changes and show the person details when changed.
-            messageTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
-                    ->showMessageDetails(newValue));
-
-
-
-        }
-
-    public void createMessage() {
-        Message test1 = new Message();
-        test1.setId("a12");
-        test1.setSender(new MessageStakeholder("Muddi", "muddi@home.de"));
-        test1.setSubject("Erinnerung");
-        test1.setImportanceOfMessage(MessageImportance.NORMAL);
-        test1.setReceivedAt(LocalDateTime.now());
-        test1.setReadStatus(true);
-        test1.setRecipients(new MessageStakeholder("Icke", "Icke@Berlin.de"));
-        test1.setText("Hallo!!");
-        loadMessageIcons();
-        messageContent.add(test1);
-        messageContent.add(test1);
-        messageContent.add(test1);
-        messageContent.add(test1);
-        Message test2 = new Message();
-        test2.setId("a13");
-        test2.setSender(new MessageStakeholder("Muddi", "muddi@home.de"));
-        test2.setSubject("Erinnerung2");
-        test2.setImportanceOfMessage(MessageImportance.HIGH);
-        test2.setReceivedAt(LocalDateTime.now());
-        test2.setRecipients(new MessageStakeholder("Jemand", "Jemand@Berlin.de"));
-        test2.setReadStatus(true);
-        test2.setText("Wie geht es dir?");
-        loadMessageIcons();
-        messageContent.add(test2);
-
-
-
-    }
-
-
-
-
-    public void loadMessageIcons() {
         importanceOfMessage.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
         importanceOfMessage.setCellFactory(cellData -> new TableCell<Message, MessageImportance>() {
             @Override
@@ -187,15 +125,63 @@ public class MessageController implements Initializable {
                 }
             }
         });
-    }
+
+        receivedAt.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
+        receivedAt.setCellFactory(cellData -> new TableCell<Message, LocalDateTime>()
+        {
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                    setStyle("");
+                } else setText(formatter.format(item));
+            }
+        });
+        /*
+        dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
+
+        importanceOfMessage.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
+        importanceOfMessage.setCellFactory(cellData -> new TableCell<Message, MessageImportance>() {
+    */
+            sender.setCellValueFactory(cellData->cellData.getValue().senderProperty().get().nameProperty());
+            subject.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+
+            //createMessage();
+
+            System.out.println(messageContent.toString());
+            System.out.println("Test");
+            messageTable.setItems(messageContent);
+            showMessageDetails(null);
+
+            // Listen for selection changes and show the person details when changed.
+            messageTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
+                    -> showMessageDetails(newValue));
+
+
+        //generateMessages();
+        System.out.println("initialize messagetable");
+        fillTable("/home/xml_messages");
+        System.out.println("initialize messagetable");
+        // Clear person details.
+        showMessageDetails(null);
+        // Listen for selection changes and show the person details when changed.
+        messageTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showMessageDetails(newValue));
+
+        }
+
+
+
 
     private void showMessageDetails(Message message) {
         if (message != null) {
             // Fill the labels with info from the person object.
+            System.out.println("In showMessageDetails: message != null");
             fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
             System.out.println("FromLabel: " + fromLabel);
-            toLabel.setText(String.valueOf(message.getRecipients().getMailAddress()));
-            System.out.println("ToLabel: " + toLabel);
+            recipientsLabel.setText(String.valueOf(message.getRecipients().get(0).getMailAddress()));
+            System.out.println("ReceipientsLabel: " + recipientsLabel);
             dateLabel.setText(String.valueOf(DateUtil.format(message.getReceivedAt())));
             betreffLabel.setText(message.getSubject());
             contentTextArea.setText(message.getText());
@@ -205,12 +191,89 @@ public class MessageController implements Initializable {
         } else {
             // Person is null, remove all the text.
             fromLabel.setText("");
-            toLabel.setText("");
+            recipientsLabel.setText("");
             dateLabel.setText("");
             betreffLabel.setText("");
             contentTextArea.setText("");
             TestnachrichtLabel.setText("");
         }
     }
+    /**
+     * Opens the xml file, reads all the information and returns a new message
+     * object.
+     *
+     * @param file The passed xml file
+     * @return The resulting Message object
+     */
+    private Message readMessage(File file) {
+        try {
+            System.out.println("readMessage() Anfang von rty");
+            JAXBContext jc = JAXBContext.newInstance(MessageListWrapper.class);
+            Unmarshaller um = jc.createUnmarshaller();
+            return (Message) um.unmarshal(file);
 
+
+
+
+        } catch (JAXBException ex) {
+            Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /**
+     * Fills the table by the xml files within the passed path.
+     *
+     * @param path the path containing the xml files.
+     */
+    private void fillTable(String path) {
+        System.out.println("Anfang von fillTable()");
+
+        File file = new File(path);
+        System.out.println("Vor der for-Schleife fillTable()");
+        try {
+            System.out.println("In fillTable() Anfang von try");
+            for (File each : file.listFiles()) {
+                System.out.println("In der For-Schleife: fillTable()");
+                messageContent.add(readMessage(each));
+            }
+            messageTable.setItems(messageContent);
+        }
+        catch (NullPointerException e) {
+            System.out.println("Keine Daten in da Liste");
+        }
+
+        /* public void createMessage() {
+        Message test1 = new Message();
+        test1.setId("a12");
+        test1.setSender(new MessageStakeholder("Muddi", "muddi@home.de"));
+        test1.setSubject("Erinnerung");
+        test1.setImportanceOfMessage(MessageImportance.NORMAL);
+        test1.setReceivedAt(LocalDateTime.now());
+        test1.setReadStatus(true);
+        test1.setRecipients(new MessageStakeholder("Icke", "Icke@Berlin.de"));
+        test1.setText("Hallo!!");
+        loadMessageIcons();
+        messageContent.add(test1);
+        messageContent.add(test1);
+        messageContent.add(test1);
+        messageContent.add(test1);
+        Message test2 = new Message();
+        test2.setId("a13");
+        test2.setSender(new MessageStakeholder("Muddi", "muddi@home.de"));
+        test2.setSubject("Erinnerung2");
+        test2.setImportanceOfMessage(MessageImportance.HIGH);
+        test2.setReceivedAt(LocalDateTime.now());
+        test2.setRecipients(new MessageStakeholder("Jemand", "Jemand@Berlin.de"));
+        test2.setReadStatus(true);
+        test2.setText("Wie geht es dir?");
+        loadMessageIcons();
+        messageContent.add(test2);
+
+
+
+    }
+*/
+
+    }
 }

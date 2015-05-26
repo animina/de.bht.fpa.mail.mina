@@ -22,11 +22,10 @@ public class Message {
     private StringProperty text;
 
     //alte Version mit Liste
-  //  private List<MessageStakeholder> recipients;
+    private List<MessageStakeholder> recipients;
 
     //neue bzw ziwschenversion mit ObjectProperty
-
-    private ObjectProperty <MessageStakeholder> recipients;
+    //private ObjectProperty <MessageStakeholder> recipients;
 
     public Message() {
         this.importanceOfMessage = new SimpleObjectProperty<>();
@@ -37,11 +36,24 @@ public class Message {
         this.text = new SimpleStringProperty();
 
       //alte Version mit Liste
-      //  this.recipients = new ArrayList<>();
+        this.recipients = new ArrayList<>();
 
         //neue Version oder Zwischenversion mit ObjectProperty
-        this.recipients = new SimpleObjectProperty<>();
+        //this.recipients = new SimpleObjectProperty<>();
     }
+
+
+
+    @XmlElementWrapper (name="recipients")
+    @XmlElement(name = "recipient")
+    public List<MessageStakeholder> getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(List<MessageStakeholder> recipients) {
+        this.recipients = recipients;
+    }
+
 /*
     @XmlElementWrapper
     @XmlElement(name = "recipient")
@@ -55,17 +67,17 @@ public class Message {
 */
 
     //alte Version von set ung getRecipients()
-    public void setRecipients(MessageStakeholder messageStakeholder) {
-        recipients.set(messageStakeholder);
-    }
+   // public void setRecipients(MessageStakeholder messageStakeholder) {
+     //   recipients.set(messageStakeholder);
+    //}
 
 
 
 
 
-    public MessageStakeholder getRecipients() {
-        return recipients.get();
-    }
+   // public MessageStakeholder getRecipients() {
+    //    return recipients.get();
+   // }
 
     public void setId(String id) {
         this.id = id;

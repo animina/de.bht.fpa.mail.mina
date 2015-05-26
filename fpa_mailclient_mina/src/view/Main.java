@@ -11,6 +11,7 @@ import javafx.scene.control.SplitPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import model.MessageListWrapper;
 
 import java.io.IOException;
 
@@ -47,17 +48,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-    /**
-     * Opens a dialog and shows details about the creator of this project. If the user
-     * clicks OK, the Window is closed and true is returned.
-     *
-     *
-     * @return true if the user clicked OK, false otherwise.
-     */
-
-
-
-
 
 }
