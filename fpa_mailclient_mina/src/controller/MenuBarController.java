@@ -5,9 +5,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import view.Main;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -31,7 +34,7 @@ public class MenuBarController  {
     @FXML
     private MenuItem helpAbout;
 
-    private Stage dialogStage;
+    private Stage aboutWindow;
     private boolean okClicked = false;
 
 
@@ -51,14 +54,6 @@ public class MenuBarController  {
     }
 */
 
-    /**
-     * Sets the stage of this dialog.
-     *
-     * @param dialogStage
-     */
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
 
     /**
      * Returns true if the user clicked OK, false otherwise.
@@ -89,31 +84,20 @@ public class MenuBarController  {
     public void clickedHelp(){
         System.out.println("Endlich Mails");
         AnchorPane root;
-        try {
-            root = FXMLLoader.load(getClass().getResource("../view/aboutView.fxml"));
-            Stage aboutWindow = new Stage();
-            setDialogStage(aboutWindow);
-            aboutWindow.setTitle("About Endlich Mails");
-            aboutWindow.setScene(new Scene(root, 300, 250));
-            aboutWindow.showAndWait();
 
-            if (okClicked) aboutWindow.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (isOkClicked()) {
-            handleOk();
-}
-
+            Alert aboutDialog = new Alert(Alert.AlertType.INFORMATION);
+            aboutDialog.initOwner(aboutWindow);
+            aboutDialog.setTitle("About Endlich Mails");
+            aboutDialog.setHeaderText("About");
+            aboutDialog.setContentText("Author: Franzi \n\nVersion: 2.3.5\n\n info@franzi.net");
+         //   aboutDialog.setContentText("info@franzi.net");
+            aboutDialog.showAndWait();
 
     }
 
-
-
     @FXML
-    private void handleOk() {
-        okClicked = true;
+    public void handleOk() {
+        aboutWindow.close();
     }
 
 
