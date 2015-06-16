@@ -30,7 +30,7 @@
               <MenuItem fx:id="filterSetFilter" mnemonicParsing="false" text="Set Filter" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" onAction="#clickedHelp" text="Help">
+          <Menu mnemonicParsing="false" text="Help">
               <items>
                   <MenuItem fx:id="helpAbout" mnemonicParsing="false" onAction="#clickedHelp" text="About" />
               </items>

@@ -7,7 +7,10 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Directory;
+
 import javax.swing.tree.TreeNode;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -31,7 +34,8 @@ public class TreeViewController implements Initializable {
                 subFolder.setGraphic(new ImageView (new Image (getClass().getResourceAsStream("../Mail-icon.png"))));
             }
             root.setExpanded(true);
-            fileTree.setRoot(root);
+                fileTree.setRoot(new Directory(new File("TreeRoot")));
+        //    fileTree.setRoot(root);
         }
 
 }

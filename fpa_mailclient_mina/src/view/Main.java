@@ -1,19 +1,13 @@
 package view;
 
-import controller.AboutViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.SplitPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import model.MessageListWrapper;
-
-import java.io.IOException;
 
 public class Main extends Application {
 
@@ -46,7 +40,10 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+
         launch(args);
+
+
     }
 
 }

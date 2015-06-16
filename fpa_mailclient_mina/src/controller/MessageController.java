@@ -5,45 +5,39 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Message;
 import model.MessageImportance;
+import javafx.event.ActionEvent;
+
 import model.MessageStakeholder;
 import model.MessageListWrapper;
 
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
 import util.DateUtil;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-
 /**
  * Created by mina on 05.05.15.
  */
-public class MessageController implements Initializable {
+public class MessageController implements Initializable, Observer {
 
     private ObservableList<Message> messageContent = FXCollections.observableArrayList();
-
-    private final Node highPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../highprio-icon.png")));
-    private final Node mediumPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../normalprio-icon.png")));
-    private final Node lowPriorityIcon = new ImageView(new Image(getClass().getResourceAsStream("../lowprio-icon.png")));
-
-
 
     @FXML
     private TableView<Message> messageTable;
@@ -63,7 +57,6 @@ public class MessageController implements Initializable {
     @FXML
     private TableColumn<Message, String> subject;
 
-
     @FXML
     private Label recipientsLabel;
 
@@ -81,6 +74,7 @@ public class MessageController implements Initializable {
 
     @FXML
     private Label TestnachrichtLabel;
+
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
@@ -119,8 +113,8 @@ public class MessageController implements Initializable {
                     setStyle("");
                 } else {
                     ImageView messageReadImageView;
-                    if (item) messageReadImageView = new ImageView(new Image("not-read-icon.png"));
-                    else messageReadImageView = new ImageView((new Image("read-icon.png")));
+                    if (item) messageReadImageView = new ImageView(new Image("read-icon.png"));
+                    else messageReadImageView = new ImageView((new Image("not-read-icon.png")));
                     setGraphic(messageReadImageView);
                 }
             }
@@ -161,7 +155,7 @@ public class MessageController implements Initializable {
 
         //generateMessages();
         System.out.println("initialize messagetable");
-        fillTable("/home/xml_messages");
+        fillTable("src/xml_messages");
         System.out.println("initialize messagetable");
         // Clear person details.
         showMessageDetails(null);
@@ -176,6 +170,7 @@ public class MessageController implements Initializable {
 
     private void showMessageDetails(Message message) {
         if (message != null) {
+
             // Fill the labels with info from the person object.
             System.out.println("In showMessageDetails: message != null");
             fromLabel.setText(String.valueOf(message.getSender().getMailAddress()));
@@ -186,8 +181,12 @@ public class MessageController implements Initializable {
             betreffLabel.setText(message.getSubject());
             contentTextArea.setText(message.getText());
             TestnachrichtLabel.setText("Eine Testnachricht von " + message.getSender().getMailAddress());
+            //Monas Version
+            handleLineSelected(message);
+           //hier gibts nen Fehler
+           // markAsUnread(message);
 
-            // birthdayLabel.setText(...);
+
         } else {
             // Person is null, remove all the text.
             fromLabel.setText("");
@@ -207,19 +206,17 @@ public class MessageController implements Initializable {
      */
     private Message readMessage(File file) {
         try {
-            System.out.println("readMessage() Anfang von rty");
-            JAXBContext jc = JAXBContext.newInstance(MessageListWrapper.class);
+            JAXBContext jc = JAXBContext.newInstance(Message.class);
             Unmarshaller um = jc.createUnmarshaller();
             return (Message) um.unmarshal(file);
-
-
-
 
         } catch (JAXBException ex) {
             Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
+
+
 
     /**
      * Fills the table by the xml files within the passed path.
@@ -231,17 +228,66 @@ public class MessageController implements Initializable {
 
         File file = new File(path);
         System.out.println("Vor der for-Schleife fillTable()");
+        //   try {
+        //     System.out.println("In fillTable() Anfang von try");
+        System.out.println(file.listFiles());
+        for (File each : file.listFiles()) {
+            System.out.println("In der For-Schleife: fillTable()");
+            messageContent.add(readMessage(each));
+        }
+        messageTable.setItems(messageContent);
+    }
+
+   private void handleLineSelected (Message message) {
+       if (message.getReadStatus() == false) {
+           message.setReadStatus(true);
+           try {
+               saveMessage(messageTable.getSelectionModel().getSelectedItem());
+           } catch (JAXBException e) {
+               e.printStackTrace();
+           }
+       }
+   }
+
+    @FXML
+    public void markAsUnread() {
+        System.out.println("markAsUnread()-Methode");
+       // Message message = new Message(messageTable.getSelectionModel().getSelectedItem());
+        if (messageTable.getSelectionModel().getSelectedItem() != null) {
+            messageTable.getSelectionModel().getSelectedItem().setReadStatus(false);
+        }
         try {
-            System.out.println("In fillTable() Anfang von try");
-            for (File each : file.listFiles()) {
-                System.out.println("In der For-Schleife: fillTable()");
-                messageContent.add(readMessage(each));
-            }
-            messageTable.setItems(messageContent);
+           saveMessage(messageTable.getSelectionModel().getSelectedItem());
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
-        catch (NullPointerException e) {
-            System.out.println("Keine Daten in da Liste");
-        }
+    }
+
+    public void saveMessage(Message msg) throws JAXBException{
+        final File currentDir = new File("src/xml_messages");
+        JAXBContext context = JAXBContext.newInstance(Message.class);
+        Marshaller m = context.createMarshaller();
+        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        m.marshal(msg, new File(currentDir.getAbsolutePath() + "/" + msg.getId() + ".xml"));
+        System.out.println("savemessage()");
+        System.out.println(new File(currentDir.getAbsolutePath() + "/" + msg.getId() + ".xml"));
+    }
+
+    @Override
+        public void update(Observable o, Object arg) {
+        System.out.println("Jetzt wird geupdated!");
+        System.out.println("Das Object args vor der fillTable-Methode: " + arg );
+
+        //forall messages in Table: +  showMessageDetails();
+
+
+        fillTable("src/xml_messages");
+    }
+
+    //  }
+      //  catch (NullPointerException e) {
+      //      System.out.println("Keine Daten in da Liste");
+      //  }
 
         /* public void createMessage() {
         Message test1 = new Message();
@@ -275,5 +321,5 @@ public class MessageController implements Initializable {
     }
 */
 
-    }
+
 }

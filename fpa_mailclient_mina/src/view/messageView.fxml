@@ -20,6 +20,13 @@
                     <TableColumn fx:id="sender" prefWidth="75.0" text="Sender" />
                     <TableColumn fx:id="subject" prefWidth="356.0" text="Subject" />
                 </columns>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem fx:id="saveAsRead" mnemonicParsing="false" onAction="#markAsUnread" text="Mark as unread" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
             </TableView>
         </children>
     </AnchorPane>
