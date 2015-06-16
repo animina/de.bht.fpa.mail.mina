@@ -28,4 +28,9 @@ public abstract class FileSystemItem extends TreeItem{
         }
         //return super.isLeaf();
     }
+
+    public File getFile() {
+        return file;
+    }
+
 }

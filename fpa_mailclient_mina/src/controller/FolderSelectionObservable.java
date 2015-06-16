@@ -10,23 +10,23 @@ import javafx.scene.control.TreeView;
 public class FolderSelectionObservable extends Observable {
 
     private static TreeView<FileSystemItem> treeView;
-    private static FolderSelectionObservable instance;
+    private static FolderSelectionObservable instance = new FolderSelectionObservable();
 
-    private FolderSelectionObservable(TreeView<FileSystemItem> treeView) {
-        FolderSelectionObservable.treeView = treeView;
-        treeView.getSelectionModel().selectedItemProperty().addListener((e) -> changedSomething());
-
+    private FolderSelectionObservable() {
     }
 
-    public static FolderSelectionObservable getInstance(TreeView<FileSystemItem> treeView) {
+    public static FolderSelectionObservable getInstance() {
         if (instance == null) {
-            instance = new FolderSelectionObservable(treeView);
+           return FolderSelectionObservable.instance;
         }
         return instance;
     }
 
-    public void changedSomething() {
+    public void changeSomething(String pfad) {
+
         setChanged();
-        notifyObservers();
+        notifyObservers(pfad);
     }
+
+
 }

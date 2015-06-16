@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <message>
-    <id>1428077534098</id>
-    <importanceOfMessage>HIGH</importanceOfMessage>
+    <id>1428077534099</id>
+    <importanceOfMessage>LOW</importanceOfMessage>
     <readStatus>false</readStatus>
-    <receivedAt>2014-03-07T14:17</receivedAt>
+    <receivedAt>2014-05-26T17:09</receivedAt>
     <recipients>
-        <recipient>
-            <mailAddress>info@otto-office.de</mailAddress>
-            <name>Kundenservice</name>
-        </recipient>
-        <recipient>
-            <mailAddress>info@meetup.com</mailAddress>
-            <name>Support</name>
-        </recipient>
         <recipient>
             <mailAddress>info@ing-diba.de</mailAddress>
             <name>ING-DiBa</name>

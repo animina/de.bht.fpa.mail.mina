@@ -8,12 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import model.Message;
-import model.MessageImportance;
+import model.*;
 import javafx.event.ActionEvent;
-
-import model.MessageStakeholder;
-import model.MessageListWrapper;
 
 import util.DateUtil;
 
@@ -37,7 +33,7 @@ import java.util.logging.Logger;
  */
 public class MessageController implements Initializable, Observer {
 
-    private ObservableList<Message> messageContent = FXCollections.observableArrayList();
+    private ObservableList<Message> messageContent;
 
     @FXML
     private TableView<Message> messageTable;
@@ -76,10 +72,24 @@ public class MessageController implements Initializable, Observer {
     private Label TestnachrichtLabel;
 
 
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+    private void clearMessageContent() {
+        recipientsLabel.setText("");
+        fromLabel.setText("");
+        dateLabel.setText("");
+        TestnachrichtLabel.setText("");
+        contentTextArea.clear();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        messageContent = FXCollections.observableArrayList();
+
+        File pfad = new File("src/TreeRoot/Inbox");
+        FolderSelectionObservable.getInstance().addObserver(this);
 
         importanceOfMessage.setCellValueFactory(cellData -> cellData.getValue().importanceOfMessageProperty());
         importanceOfMessage.setCellFactory(cellData -> new TableCell<Message, MessageImportance>() {
@@ -121,8 +131,7 @@ public class MessageController implements Initializable, Observer {
         });
 
         receivedAt.setCellValueFactory(cellData -> cellData.getValue().receivedAtProperty());
-        receivedAt.setCellFactory(cellData -> new TableCell<Message, LocalDateTime>()
-        {
+        receivedAt.setCellFactory(cellData -> new TableCell<Message, LocalDateTime>() {
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
@@ -139,13 +148,13 @@ public class MessageController implements Initializable, Observer {
         importanceOfMessage.setCellFactory(cellData -> new TableCell<Message, MessageImportance>() {
     */
             sender.setCellValueFactory(cellData->cellData.getValue().senderProperty().get().nameProperty());
-            subject.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+        subject.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
 
             //createMessage();
 
             System.out.println(messageContent.toString());
             System.out.println("Test");
-            messageTable.setItems(messageContent);
+        messageTable.setItems(messageContent);
             showMessageDetails(null);
 
             // Listen for selection changes and show the person details when changed.
@@ -155,7 +164,7 @@ public class MessageController implements Initializable, Observer {
 
         //generateMessages();
         System.out.println("initialize messagetable");
-        fillTable("src/xml_messages");
+      //  fillTable("src/xml_messages");
         System.out.println("initialize messagetable");
         // Clear person details.
         showMessageDetails(null);
@@ -227,15 +236,15 @@ public class MessageController implements Initializable, Observer {
         System.out.println("Anfang von fillTable()");
 
         File file = new File(path);
-        System.out.println("Vor der for-Schleife fillTable()");
-        //   try {
-        //     System.out.println("In fillTable() Anfang von try");
-        System.out.println(file.listFiles());
-        for (File each : file.listFiles()) {
-            System.out.println("In der For-Schleife: fillTable()");
-            messageContent.add(readMessage(each));
+
+        if (file.listFiles() != null && file != null) {
+            System.out.println("Vor der for-Schleife fillTable()");
+
+            for (File each : file.listFiles()) {
+                messageContent.add(readMessage(each));
+            }
+            messageTable.setItems(messageContent);
         }
-        messageTable.setItems(messageContent);
     }
 
    private void handleLineSelected (Message message) {
@@ -264,7 +273,7 @@ public class MessageController implements Initializable, Observer {
     }
 
     public void saveMessage(Message msg) throws JAXBException{
-        final File currentDir = new File("src/xml_messages");
+        final File currentDir = new File("TreeRoot/Inbox");
         JAXBContext context = JAXBContext.newInstance(Message.class);
         Marshaller m = context.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -273,15 +282,17 @@ public class MessageController implements Initializable, Observer {
         System.out.println(new File(currentDir.getAbsolutePath() + "/" + msg.getId() + ".xml"));
     }
 
+
     @Override
         public void update(Observable o, Object arg) {
         System.out.println("Jetzt wird geupdated!");
         System.out.println("Das Object args vor der fillTable-Methode: " + arg );
 
-        //forall messages in Table: +  showMessageDetails();
 
+        String pfad = "TreeRoot/"+arg.toString();
+        messageTable.getItems().clear();
+        fillTable(pfad);
 
-        fillTable("src/xml_messages");
     }
 
     //  }
