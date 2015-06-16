@@ -7,8 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MessageController" >
+<SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MessageController">
 
 <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -21,10 +20,17 @@
                     <TableColumn fx:id="sender" prefWidth="75.0" text="Sender" />
                     <TableColumn fx:id="subject" prefWidth="356.0" text="Subject" />
                 </columns>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem fx:id="saveAsRead" mnemonicParsing="false" onAction="#markAsUnread" text="Mark as unread" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
             </TableView>
         </children>
     </AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="798.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0">
         <children>
             <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <columnConstraints>
@@ -49,16 +55,16 @@
                         <children>
                             <Label text="To:" />
                             <Label text="From" />
-                            <Label text="Eine Testnachricht" />
+                            <Label fx:id="TestnachrichtLabel" />
                         </children>
                     </VBox>
-                    <TextArea fx:id="contentTextArea" editable="false" prefHeight="203.0" prefWidth="361.0" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." wrapText="true" GridPane.rowIndex="2" />
-                    <Label text="12.05.2015" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                    <TextArea fx:id="contentTextArea" editable="false" prefHeight="42.0" prefWidth="50.0" GridPane.rowIndex="2" />
+                    <Label fx:id="dateLabel" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <children>
-                            <Label fx:id="toLabel" />
+                            <Label fx:id="recipientsLabel" layoutX="71.0" layoutY="8.0" />
                             <Label fx:id="fromLabel" />
-                            <Label fx:id="betreffLabel" />
+                            <Label fx:id="betreffLabel" text="betreffLabel" />
                         </children>
                     </VBox>
                 </children>

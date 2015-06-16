@@ -16,9 +16,9 @@ public class MessageStakeholder {
         this.mailAddress = new SimpleStringProperty();
     }
 
-    public MessageStakeholder(String name, String mailAdresse) {
+    public MessageStakeholder(String name, String mailAddress) {
         this.name = new SimpleStringProperty(name);
-        this.mailAddress = new SimpleStringProperty("mailAdresse");
+        this.mailAddress = new SimpleStringProperty(mailAddress);
     }
 
     public String getName() {

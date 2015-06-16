@@ -2,6 +2,7 @@
   <component name="FindRecents">
     <findStrings>
       <find>getRecip</find>
+      <find>aboutWindow</find>
     </findStrings>
   </component>
 </application>

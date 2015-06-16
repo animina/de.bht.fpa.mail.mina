@@ -2,6 +2,10 @@ package model;
 
 import javafx.beans.property.*;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +13,7 @@ import java.util.List;
 /**
  * Created by Benjamin Haupt on 26.03.15.
  */
+@XmlRootElement
 public class Message {
 
     private String id;
@@ -18,7 +23,12 @@ public class Message {
     private ObjectProperty<MessageStakeholder> sender;
     private StringProperty subject;
     private StringProperty text;
+
+    //alte Version mit Liste
     private List<MessageStakeholder> recipients;
+
+    //neue bzw ziwschenversion mit ObjectProperty
+    //private ObjectProperty <MessageStakeholder> recipients;
 
     public Message() {
         this.importanceOfMessage = new SimpleObjectProperty<>();
@@ -27,8 +37,50 @@ public class Message {
         this.receivedAt = new SimpleObjectProperty<>();
         this.sender = new SimpleObjectProperty<>();
         this.text = new SimpleStringProperty();
+
+      //alte Version mit Liste
         this.recipients = new ArrayList<>();
+
+        //neue Version oder Zwischenversion mit ObjectProperty
+        //this.recipients = new SimpleObjectProperty<>();
     }
+
+
+
+    @XmlElementWrapper (name="recipients")
+    @XmlElement(name = "recipient")
+    public List<MessageStakeholder> getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(List<MessageStakeholder> recipients) {
+        this.recipients = recipients;
+    }
+
+/*
+    @XmlElementWrapper
+    @XmlElement(name = "recipient")
+    public List<MessageStakeholder> getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(List<MessageStakeholder> recipients) {
+        this.recipients = recipients;
+    }
+*/
+
+    //alte Version von set ung getRecipients()
+   // public void setRecipients(MessageStakeholder messageStakeholder) {
+     //   recipients.set(messageStakeholder);
+    //}
+
+
+
+
+
+   // public MessageStakeholder getRecipients() {
+    //    return recipients.get();
+   // }
 
     public void setId(String id) {
         this.id = id;
@@ -58,6 +110,13 @@ public class Message {
         this.receivedAt.set(receivedAt);
     }
 
+    //altes getRecievedAt()
+    //public LocalDateTime getReceivedAt() {
+    //    return this.receivedAt.get();    }
+
+    //Neues getRecievedAt()
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDateTime getReceivedAt() {
         return this.receivedAt.get();
     }
@@ -108,13 +167,5 @@ public class Message {
 
     public String getText() {
         return this.text.get();
-    }
-
-       public List<MessageStakeholder> getRecipients() {
-        return recipients;
-    }
-
-    public void setRecipients(List<MessageStakeholder> recipients) {
-        this.recipients = recipients;
     }
 }
