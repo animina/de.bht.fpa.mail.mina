@@ -12,6 +12,7 @@ import model.*;
 import javafx.event.ActionEvent;
 
 import util.DateUtil;
+import view.FilterDialog;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -213,7 +214,8 @@ public class MessageController implements Initializable, Observer {
      * @param file The passed xml file
      * @return The resulting Message object
      */
-    private Message readMessage(File file) {
+   /* readMessage aus dieser Klasse ausgelagert und in FpaMessageLoaderImpl.java verschoben
+   private Message readMessage(File file) {
         try {
             JAXBContext jc = JAXBContext.newInstance(Message.class);
             Unmarshaller um = jc.createUnmarshaller();
@@ -224,7 +226,7 @@ public class MessageController implements Initializable, Observer {
         }
         return null;
     }
-
+*/
 
 
     /**
@@ -233,18 +235,12 @@ public class MessageController implements Initializable, Observer {
      * @param path the path containing the xml files.
      */
     private void fillTable(String path) {
-        System.out.println("Anfang von fillTable()");
+        //Object von fpaMessageLoaderImpl erzeugen
+        FpaMessageLoaderImpl messageLoader = new FpaMessageLoaderImpl();
+        ObservableList<Message> messages = messageLoader.getMessages(path);
+        messageTable.setItems(messages);
 
-        File file = new File(path);
 
-        if (file.listFiles() != null && file != null) {
-            System.out.println("Vor der for-Schleife fillTable()");
-
-            for (File each : file.listFiles()) {
-                messageContent.add(readMessage(each));
-            }
-            messageTable.setItems(messageContent);
-        }
     }
 
    private void handleLineSelected (Message message) {
@@ -282,6 +278,15 @@ public class MessageController implements Initializable, Observer {
         System.out.println(new File(currentDir.getAbsolutePath() + "/" + msg.getId() + ".xml"));
     }
 
+    @FXML
+    public void filterMessagesNow() {
+        // was passiert in FilterDialog genau? Fragen formulieren!
+        // messageContent ist eine ObservableList<Message>
+        // => kann ich die hier benutzen!?
+        FilterDialog filter = new FilterDialog();
+
+        System.out.println("Filtere");
+    }
 
     @Override
         public void update(Observable o, Object arg) {

@@ -9,7 +9,6 @@ import javafx.scene.control.TreeView;
  */
 public class FolderSelectionObservable extends Observable {
 
-    private static TreeView<FileSystemItem> treeView;
     private static FolderSelectionObservable instance = new FolderSelectionObservable();
 
     private FolderSelectionObservable() {

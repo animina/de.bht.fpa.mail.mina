@@ -24,6 +24,7 @@
                   <ContextMenu>
                     <items>
                       <MenuItem fx:id="saveAsRead" mnemonicParsing="false" onAction="#markAsUnread" text="Mark as unread" />
+                        <MenuItem fx:id="filterMessages" mnemonicParsing="false" onAction="#filterMessagesNow" text="Filter Messages" />
                     </items>
                   </ContextMenu>
                </contextMenu>
